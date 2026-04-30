@@ -1,0 +1,143 @@
+/* ==========================================
+ * style.css - ゲームの見た目（デザイン）
+ * ここを変えると色やレイアウトが変わります！
+ * ========================================== */
+
+:root {
+  --tile-size: 40px;
+  --move-speed: 0.2s;
+  --player-color: #00ffff;
+  --key-color: #ff00ff;
+  --wall-color: #1a2542;
+  --bg-color: #0a1128;
+}
+
+body {
+  margin: 0; padding: 0;
+  background-color: #000; color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  overflow: hidden; /* スクロールバーを消す */
+}
+
+/* 画面全体を覆うUIの共通設定 */
+.screen {
+  position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  background-color: rgba(0, 0, 0, 0.85); z-index: 100; text-align: center;
+}
+.hidden { display: none !important; }
+
+/* ゲーム全体のコンテナ */
+#game-container {
+  display: flex; width: 100vw; height: 100vh;
+}
+
+/* 左側のステータスUI */
+#ui-container {
+  width: 250px; background-color: #111; border-right: 2px solid #444;
+  padding: 20px; box-sizing: border-box; font-size: 14px;
+}
+#ui-container h3 { color: #f1c40f; margin-bottom: 10px; border-bottom: 1px solid #555; padding-bottom: 5px; }
+#ui-container p { margin: 5px 0; }
+#inventory-list { list-style: none; padding: 0; }
+#inventory-list li { margin: 5px 0; color: var(--key-color); }
+
+/* マップが見える窓 */
+#map-viewport {
+  flex-grow: 1; position: relative; overflow: hidden; background-color: var(--bg-color);
+}
+
+/* マップ全体を動かすためのコンテナ */
+#map-container {
+  position: absolute; top: 0; left: 0; transition: transform var(--move-speed) linear;
+}
+
+/* 基本のタイル設定 */
+.tile {
+  position: absolute; width: var(--tile-size); height: var(--tile-size);
+  display: flex; justify-content: center; align-items: center;
+  font-weight: bold; font-size: calc(var(--tile-size) * 0.4);
+  box-sizing: border-box;
+}
+
+/* 床 */
+.floor { background-color: var(--bg-color); }
+/* 壁 */
+.wall { background-color: var(--wall-color); border-radius: 4px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+/* プレイヤー */
+.player {
+  background-color: var(--player-color); border-radius: 50%;
+  box-shadow: 0 0 15px var(--player-color); z-index: 10;
+  transition: transform var(--move-speed) linear;
+}
+/* 鍵 */
+.key { color: var(--key-color); text-shadow: 0 0 5px var(--key-color); animation: bounce 1s infinite alternate; }
+/* 扉 */
+.door { background-color: #8b4513; border: 2px solid #5c2e0b; color: #fff; box-shadow: inset 0 0 5px #000; }
+/* ワープポイント */
+.warp { background-color: rgba(138, 43, 226, 0.5); border-radius: 50%; animation: pulse 1.5s infinite; color: #fff; }
+/* エンディング（ゴール） */
+.end { background-color: gold; color: black; border-radius: 10%; box-shadow: 0 0 20px gold; animation: pulse 1s infinite; }
+/* 罠 */
+.trap { color: #555; }
+
+/* 敵キャラ（RPG） */
+.enemy { border-radius: 20%; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 5; font-size: calc(var(--tile-size) * 0.6); }
+/* 宝箱 */
+.chest { background-color: #d35400; border: 2px solid #e67e22; z-index: 4; font-size: calc(var(--tile-size) * 0.4); }
+/* お店・NPC */
+.npc { background-color: #3498db; border-radius: 50%; z-index: 5; }
+
+/* アニメーション */
+@keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
+@keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
+
+/* ダメージ時のフラッシュエフェクト */
+#flash-overlay {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background-color: white; opacity: 0; pointer-events: none; z-index: 50;
+}
+.flash-anim { animation: flashEffect 0.3s ease-out; }
+@keyframes flashEffect { 0% { opacity: 0.8; } 100% { opacity: 0; } }
+.flash-red { animation: flashRedEffect 0.3s ease-out; }
+@keyframes flashRedEffect { 0% { opacity: 0.8; background-color: red; } 100% { opacity: 0; background-color: transparent; } }
+
+/* クイズコンテナ */
+.quiz-container {
+  background-color: #222; border: 3px solid #555; border-radius: 10px;
+  padding: 30px; width: 80%; max-width: 600px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+.quiz-container h2 { margin-top: 0; color: #fff; line-height: 1.4; }
+.choices-container { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+button {
+  background-color: #444; color: #fff; border: 2px solid #777; padding: 15px;
+  font-size: 18px; border-radius: 5px; cursor: pointer; transition: 0.2s; font-family: inherit;
+}
+button:hover { background-color: #666; transform: scale(1.02); }
+input[type="text"] {
+  width: 100%; padding: 15px; font-size: 18px; margin: 20px 0; border: 2px solid #777;
+  border-radius: 5px; background-color: #111; color: #fff; box-sizing: border-box; text-align: center;
+}
+
+/* 通知メッセージ */
+#notification {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background-color: rgba(0,0,0,0.8); border: 1px solid #fff; padding: 15px 30px;
+  border-radius: 20px; font-size: 18px; transition: opacity 0.3s; z-index: 60;
+  opacity: 0; /* 初期状態は透明 */
+}
+
+/* デバッグ座標 */
+#debug-coords {
+  position: absolute; top: 10px; right: 10px; background-color: rgba(0,0,0,0.5);
+  padding: 5px 10px; font-family: monospace; z-index: 60; border: 1px solid red; color: red;
+}
+
+/* エンディングスクロール */
+#ending-scroll-container {
+  width: 100%; height: 300px; overflow: hidden; position: relative; margin-top: 30px;
+  mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+}
+#ending-scroll { position: absolute; width: 100%; top: 100%; text-align: center; }
+@keyframes scrollUp { 0% { top: 100%; } 100% { top: -100%; } }

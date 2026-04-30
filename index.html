@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>戦慄の迷宮</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- スタート画面 -->
+    <div id="start-screen" class="screen">
+        <h1 id="title-display">戦慄の迷宮</h1>
+        <p>制作: <span id="creator-display">YU HASEGAWA</span></p>
+        <button id="btn-start">ゲームスタート！</button>
+    </div>
+
+    <!-- ゲーム画面 -->
+    <div id="game-container" class="hidden">
+
+        <div id="ui-container">
+
+            <h3>インベントリ</h3>
+            <ul id="inventory-list"></ul>
+        </div>
+
+        <div id="map-viewport">
+            <div id="map-container">
+                <!-- ここにJavaScriptでタイルが追加されます -->
+            </div>
+
+            <!-- メッセージ表示オーバーレイ -->
+            <div id="notification" class="hidden"></div>
+            <!-- フラッシュエフェクト用 -->
+            <div id="flash-overlay"></div>
+
+            <!-- デバッグ用座標表示 -->
+            <div id="debug-coords" class="hidden">X: 0, Y: 0</div>
+        </div>
+    </div>
+
+    <!-- エンディング画面 -->
+    <div id="ending-screen" class="screen hidden">
+        <h1>CONGRATULATIONS!!</h1>
+        <p>すべての謎を解き明かした！</p>
+        <div id="ending-scroll-container">
+            <div id="ending-scroll">
+                <h2>STAFF</h2>
+                <p>ディレクター</p>
+                <p id="staff-name-display">YU HASEGAWA</p>
+                <p>スペシャルサンクス</p>
+                <p>ここに追加</p>
+                <br><br><br>
+                <h2>THANK YOU FOR PLAYING!</h2>
+            </div>
+        </div>
+        <button onclick="location.reload()" style="margin-top:20px; padding:10px 20px; font-size:18px;">タイトルへ戻る</button>
+    </div>
+
+    <!-- クイズ・ダイアログ表示用オーバーレイ -->
+    <div id="quiz-overlay" class="screen hidden">
+        <!-- 中身はJavaScriptで作られます -->
+    </div>
+
+    <!-- エラー表示用オーバーレイ（ゲーム開始前） -->
+    <div id="error-overlay" class="screen hidden">
+        <h2 style="color:red;">エラーが見つかりました！</h2>
+        <p>data.js の設定を確認してください：</p>
+        <ul id="error-list" style="color:yellow; text-align:left; max-width:600px; margin: 20px auto;"></ul>
+        <button onclick="location.reload()">再読み込み</button>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="engine.js"></script>
+</body>
+
+</html>
